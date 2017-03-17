@@ -26,40 +26,57 @@ public class Asientos {
     private int arreglo[][];
     /**
      * atributo que contiene el nombre de la pelicula
-     */
-    private Pelicula nombre;
+     */  
+        
+    private String nombre="El aro 3";;
     /**
      * atributo que contiene la duracion de la pelicula
      */
-    private Pelicula duracion;
+    private int duracion=180;;
     /**
      * atributo que contiene la descripcion de la pelicula
      */
-    private Pelicula descripcion;
+    private String descripcion=" ";;
     /**
-     * atributo que contiene el precio de la pelicula
+     * atributo que contiene el precio de la pelicula para adultos
      */
-    private Pelicula precio;
+    private byte precioAdulto=(byte)4000;;
+    /**
+     * atributo que contiene el precio de la pelicula para niños
+     */
+    private byte precioNiño=(byte)3000;;
+    
+    private int arr[][] ;
+    
+    int generales,preferenciales,disponibles;
     
     Scanner datos = new Scanner(System.in);
 /**
  * constructor 
  */
     public Asientos() {
+        
         bienvenida();
         pregunta();
+        llenar();
         seleccion();
+        cuadro();
+        tipoSilla();
     }//constructor
 
-   
-    public void bienvenida(){
+    
+/**
+ * metodo que inicializa el programa con los datos de la pelicula
+ */   
+    private void bienvenida(){
         System.out.println("Bienvenido al cinema");
         System.out.println("La pelicula de hoy es: "+nombre);
-        System.out.println("La duracio de la pelicula es: "+duracion);
+        System.out.println("La duracio de la pelicula es: "+duracion+" minutos");
         System.out.println("La descripcion de la pelcula es: "+descripcion);
-        System.out.println("El precio de la entrada es: "+precio);
         
     }//bienvenida
+    
+   
     /**
      * metodo que recibe el valor de las filas y las columnas
      * @return filas
@@ -69,29 +86,42 @@ public class Asientos {
         filas=datos.nextInt();
         System.out.println("Ingrese el numero de columnas que desea: ");
         columnas=datos.nextInt();
-        int[][] arreglo = new int [filas][columnas];
+        int arreglo[][] = new int[filas][columnas];
     } //pregunta
 /**
  * metodo que separa las filas en divide las filas en generales, preferenciales y ejecutivas
  */
+    private void llenar(){
+        int arreglo[][] = new int [filas][columnas];
+        for(int i=0;i<filas;i++){
+            for(int j=0;j<columnas;j++){
+                arreglo[i][j]=0;
+            }
+        }
+        
+    }//lenar
     private void seleccion(){
-        int generales,preferenciales,disponibles=filas;
+       
+        disponibles=filas;
         System.out.println("¿cuantas sillas desea que sean generales?");
         generales=datos.nextInt();
-        if((generales>=disponibles)){
+        if((generales>disponibles)){
             System.out.println("el numero ingresado es mayor al numero de sillas disponibles");
         }//if
         else{
             disponibles-=generales;
+            if(disponibles==0){
+                System.out.println("no quedan mas sillas disponibles");
+            }else{
             System.out.println("¿cuantas sillas desea que sean preferenciales?");
             preferenciales=datos.nextInt();
-            if(preferenciales>=disponibles){
+            if(preferenciales>disponibles){
                 System.out.println("El numero ingresado es mayor al numero de sillas disponibles");
             }//if
             else{
-                
+                disponibles-=preferenciales;
             }//else
-            disponibles-=preferenciales;
+            
             if(disponibles<=0){
                 System.out.println("no se guardaran sillas ejecutivas");
             }//if
@@ -99,8 +129,120 @@ public class Asientos {
                 System.out.println(""+disponibles+" filas se guardaran como ejecutivas");
             }//else
         }//else
+        }//else
+        
     }//seleccion
     
+    
+    private void cuadro(){
+        for(int i=0;i<columnas;i++){
+            System.out.print(" "+(i+1));
+        }//for
+        for(int i=0;i<filas;i++){
+            System.out.print("\n"+(i+1));
+            for(int j=0;j<columnas;j++){
+                System.out.print(" 0"); 
+            }//forj
+        }//fori
+    }//cuadro
+    
+    private void tipoSilla(){
+        byte x,y,silla;
+        System.out.println("\n ¿Que tipo de silla desea reservar?");
+        System.out.println("1. General \n 2.Preferencial \n 3. Ejecutiva");
+        silla=datos.nextByte();
+        switch(silla){
+            case 1:{
+                pintaGeneral();
+                break;
+            }//case1
+            case 2:{
+                pintaPreferencial();
+                break;
+            }//case2
+            case 3:{
+                pintaEjecutiva();
+                break;
+            }//case3
+            default:{
+                System.out.println("Ingrese una opcion valida");
+            }//default
+        }//switch
+                
+        
+        
+    }//tipoSilla
+    
+    private void pintaGeneral(){
+       
+        for(int i=0;i<columnas;i++){
+            System.out.print(" "+(i+1));
+        }//for
+        for(int i=0;i<generales;i++){
+            System.out.print("\n"+(i+1));
+            for(int j=0;j<columnas;j++){
+                System.out.print(" 0"); 
+            }//forj
+        }//fori
+        reserva();
+    }//pintaGeneral
+    
+    private void pintaPreferencial(){
+        
+        for(int i=0;i<columnas;i++){
+            System.out.print(" "+(i+1));
+        }//for
+        int a=generales;
+        for(int i=0;i<preferenciales;i++){
+            System.out.print("\n"+(a+=1));
+            for(int j=0;j<columnas;j++){
+                System.out.print(" 0");
+            }//forj
+        }//fori
+        reserva();
+    }//pintaPreferencial
+    
+    private void pintaEjecutiva(){
+        for(int i=0;i<columnas;i++){
+            System.out.print(" "+(i+1));
+        }//for
+        int m= generales+preferenciales;
+        for(int i=0;i<disponibles;i++){
+            System.out.print("\n"+(m+1));
+            for(int j=0;j<columnas;j++){
+                System.out.print(" 0");
+            }//forj
+        }//for
+        reserva();
+    }//pintaEjecutiva
+    
+    private void reserva(){
+        int x,y;
+        System.out.println("\n Acontinuacion ingrese las coordenadas de la silla que desea resrvar ");
+        System.out.println("Ingrese la coordenada en x: ");
+        x=datos.nextByte();
+        System.out.println("Ingrese la coordenada en y: ");
+        y=datos.nextByte();
+        int arreglo[][] = new int [x-1][y-1];
+    }//reserva
+    
+    private void informacion(){
+        String nombre,apellido;
+        int identificacion;
+        byte edad;
+        String genero;
+        System.out.println("Digite la edad de la persona: ");
+        edad= datos.nextByte();
+        System.out.println("Escriba el nombre del cliente:");
+        nombre=datos.next();
+        System.out.println("Escriba el apellido: ");
+        apellido=datos.next();
+        System.out.println("Escriba la identificacion del cliente: ");
+        identificacion=datos.nextInt();
+        System.out.println("Escriba el genero del cliente: ");
+        genero=datos.next();
+        Clientes cliente1 = new Clientes(nombre, apellido, identificacion, genero);
+    }//informacion
 /**
  * retorna el valor de las filas
  * @return filas
@@ -147,57 +289,74 @@ public class Asientos {
  * retorna el valor del nombre
  * @return nombre
  */
-    public Pelicula getNombre() {
+    public String getNombre() {
         return nombre;
     }
 /**
  * modifica el nombre
  * @param nombre 
  */
-    public void setNombre(Pelicula nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 /**
  * retorna el valor de la duracion
  * @return 
  */
-    public Pelicula getDuracion() {
+    public int getDuracion() {
         return duracion;
     }
 /**
  * modifica la duracion
  * @param duracion 
  */
-    public void setDuracion(Pelicula duracion) {
+    public void setDuracion(int duracion) {
         this.duracion = duracion;
     }
 /**
  * retorna la descripcion
  * @return descripcion
  */
-    public Pelicula getDescripcion() {
+    public String getDescripcion() {
         return descripcion;
     }
 /**
  * modifica la desripcion
  * @param descripcion 
  */
-    public void setDescripcion(Pelicula descripcion) {
+    public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 /**
  * retorna el valor del precio
  * @return precio
  */
-    public Pelicula getPrecio() {
-        return precio;
+    public byte getPrecio() {
+        return precioAdulto;
     }
 /**
  * modifica el precio
- * @param precio 
+ * @param precioAdulto
  */
-    public void setPrecio(Pelicula precio) {
-        this.precio = precio;
+    public void setPrecio(Byte precioAdulto) {
+        this.precioAdulto = precioAdulto;
     }
+/**
+ * retorna el valor del precio para niños
+ * @return precioNiño
+ */
+    public byte getPrecioNiño() {
+        return precioNiño;
+    }
+/**
+ * modifica el valor del precio para niños
+ * @param precioNiño 
+ */
+    public void setPrecioNiño(byte precioNiño) {
+        this.precioNiño = precioNiño;
+    }
+
+   
+    
     
 }//Asientos
