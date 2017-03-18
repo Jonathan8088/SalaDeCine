@@ -147,6 +147,8 @@ public class Asientos {
     }//cuadro
     
     private void tipoSilla(){
+        int opcion=1;
+        while(opcion==1){
         byte x,y,silla;
         System.out.println("\n ¿Que tipo de silla desea reservar?");
         System.out.println("1. General \n 2.Preferencial \n 3. Ejecutiva");
@@ -168,7 +170,9 @@ public class Asientos {
                 System.out.println("Ingrese una opcion valida");
             }//default
         }//switch
-                
+            System.out.println("¿Desea registrar otra silla? \n 1.Si \n 2.No");
+            opcion=datos.nextInt();
+        }//while
         
         
     }//tipoSilla
@@ -224,6 +228,7 @@ public class Asientos {
         System.out.println("Ingrese la coordenada en y: ");
         y=datos.nextByte();
         int arreglo[][] = new int [x-1][y-1];
+        informacion();
     }//reserva
     
     private void informacion(){
@@ -242,6 +247,7 @@ public class Asientos {
         System.out.println("Escriba el genero del cliente: ");
         genero=datos.next();
         Clientes cliente1 = new Clientes(nombre, apellido, identificacion, genero);
+        Silla silla = new Silla(arreglo, cliente1);
     }//informacion
 /**
  * retorna el valor de las filas
